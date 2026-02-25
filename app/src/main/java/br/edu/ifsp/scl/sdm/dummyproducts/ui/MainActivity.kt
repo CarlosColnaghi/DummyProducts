@@ -83,20 +83,21 @@ class MainActivity : AppCompatActivity() {
         retrieveProducts()
     }
 
-    private fun retrieveProducts()= StringRequest(
-        Request.Method.GET,
-        PRODUCTS_ENDPOINT,
-        {response ->
-            Gson().fromJson(response, ProductList::class.java).products.also {
-                productAdapter.addAll(it)
+    private fun retrieveProducts()=
+        StringRequest(
+            Request.Method.GET,
+            PRODUCTS_ENDPOINT,
+            {response ->
+                Gson().fromJson(response, ProductList::class.java).products.also {
+                    productAdapter.addAll(it)
+                }
+            },
+            {
+                Toast.makeText(this, getString(R.string.request_problem), Toast.LENGTH_SHORT).show()
             }
-        },
-        {
-            Toast.makeText(this, getString(R.string.request_problem), Toast.LENGTH_SHORT).show()
+        ).also {
+            DummyJSONAPI.getInstance(this).addToRequestQueue(it)
         }
-    ).also {
-        DummyJSONAPI.getInstance(this).addToRequestQueue(it)
-    }
 
     private fun retrieveProductImages(product: Product) =
         product.images.forEach { imageUrl ->
