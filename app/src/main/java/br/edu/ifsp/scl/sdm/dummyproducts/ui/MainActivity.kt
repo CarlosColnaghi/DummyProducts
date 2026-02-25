@@ -1,10 +1,13 @@
 package br.edu.ifsp.scl.sdm.dummyproducts.ui
 
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import br.edu.ifsp.scl.sdm.dummyproducts.R
 import br.edu.ifsp.scl.sdm.dummyproducts.adapter.ProductAdapter
+import br.edu.ifsp.scl.sdm.dummyproducts.adapter.ProductImageAdapter
 import br.edu.ifsp.scl.sdm.dummyproducts.databinding.ActivityMainBinding
 import br.edu.ifsp.scl.sdm.dummyproducts.model.Product
 import br.edu.ifsp.scl.sdm.dummyproducts.model.ProductList
@@ -24,6 +27,12 @@ class MainActivity : AppCompatActivity() {
     private val productAdapter: ProductAdapter by lazy {
         ProductAdapter(this, productList)
     }
+
+    private val productImageList: MutableList<Bitmap> = mutableListOf()
+    private val productImageAdapter: ProductImageAdapter by lazy{
+        ProductImageAdapter(this, productImageList)
+    }
+
     companion object{
         const val PRODUCTS_ENDPOINT = "https://dummyjson.com/products/"
     }
@@ -37,6 +46,12 @@ class MainActivity : AppCompatActivity() {
         })
 
         amb.productsSp.adapter = productAdapter
+
+        amb.productImagesRv.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = productImageAdapter
+        }
+
         retrieveProducts()
     }
 
