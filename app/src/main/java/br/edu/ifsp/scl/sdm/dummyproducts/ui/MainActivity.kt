@@ -42,10 +42,6 @@ class MainActivity : AppCompatActivity() {
         ProductImageAdapter(this, productImageList)
     }
 
-    companion object{
-        const val PRODUCTS_ENDPOINT = "https://dummyjson.com/products/"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(amb.root)
@@ -84,11 +80,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun retrieveProducts()=
-        StringRequest(
-            Request.Method.GET,
-            PRODUCTS_ENDPOINT,
-            {response ->
-                Gson().fromJson(response, ProductList::class.java).products.also {
+        DummyJSONAPI.ProductListRequest(
+            {productList ->
+                productList.products.also{
                     productAdapter.addAll(it)
                 }
             },
